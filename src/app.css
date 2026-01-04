@@ -1,13 +1,48 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-	themes: light --default, dark --prefersdark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid, lemonade, night, coffee, winter, dim, nord, sunset, abyss, caramellatte, silk;
+	themes: light --default, dark --prefersdark, luxury, forest, pastel, black, dracula, dim, nord, sunset, abyss, caramellatte, silk;
 }
 
 @font-face {
 	font-family: 'Asimovian';
-	src: url('/fonts/Asimovian.woff2') format('woff2'),
-	     url('/fonts/Asimovian.ttf') format('truetype');
+	src: url('/fonts/Asimovian.woff2') format('woff2');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+}
+
+html {
+	scrollbar-gutter: stable;
+}
+
+/* View Transitions for theme switching */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 0.5s;
+}
+
+::view-transition-old(root) {
+	animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+	animation-name: fade-in;
+}
+
+@keyframes fade-out {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }

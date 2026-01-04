@@ -6,33 +6,11 @@
 	const themes = [
 		'light',
 		'dark',
-		'cupcake',
-		'bumblebee',
-		'emerald',
-		'corporate',
-		'synthwave',
-		'retro',
-		'cyberpunk',
-		'valentine',
-		'halloween',
-		'garden',
-		'forest',
-		'aqua',
-		'lofi',
-		'pastel',
-		'fantasy',
-		'wireframe',
-		'black',
 		'luxury',
+		'forest',
+		'pastel',
+		'black',
 		'dracula',
-		'cmyk',
-		'autumn',
-		'business',
-		'acid',
-		'lemonade',
-		'night',
-		'coffee',
-		'winter',
 		'dim',
 		'nord',
 		'sunset',
@@ -50,7 +28,15 @@
 
 	function applyTheme(theme) {
 		if (typeof document !== 'undefined') {
-			document.documentElement.setAttribute('data-theme', theme);
+			// Check if View Transitions API is supported
+			if (document.startViewTransition) {
+				document.startViewTransition(() => {
+					document.documentElement.setAttribute('data-theme', theme);
+				});
+			} else {
+				// Fallback for browsers without View Transitions
+				document.documentElement.setAttribute('data-theme', theme);
+			}
 			localStorage.setItem('theme', theme);
 			currentTheme = theme;
 		}
@@ -94,7 +80,7 @@
 	</div>
 	<ul
 		tabindex="0"
-		class="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl max-h-96 overflow-y-auto">
+		class="dropdown-content bg-base-300 rounded-box z-50 w-52 p-2 shadow-2xl max-h-96 overflow-y-auto">
 		{#each themes as theme}
 			<li>
 				<input

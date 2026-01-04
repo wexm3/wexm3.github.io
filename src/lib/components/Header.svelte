@@ -36,7 +36,7 @@
 			<div class="flex-1">
 				<a href="/" class="btn btn-ghost text-xl gap-2">
 					<img src="/images/logo.webp" alt="wexm3 logo" class="h-10 w-auto" />
-					<span class="hidden sm:inline" style="font-family: 'Asimovian', sans-serif;">wexm3</span>
+					<span style="font-family: 'Asimovian', sans-serif;">wexm3</span>
 				</a>
 			</div>
 			<div class="flex-none hidden lg:block">

@@ -1,6 +1,8 @@
 {
-  "name": "wexm3",
+  "name": "wexm3 - Gaming Experience",
   "short_name": "wexm3",
+  "description": "My personal website where I share my gaming experience",
+  "start_url": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -15,5 +17,7 @@
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "en"
 }

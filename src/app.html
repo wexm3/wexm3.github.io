@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Performance: Preconnect to Umami analytics -->
+		<link rel="dns-prefetch" href="https://cloud.umami.is" />
+		<link rel="preconnect" href="https://cloud.umami.is" crossorigin />
+
 		<script defer src="https://cloud.umami.is/script.js" data-website-id="ed638076-0a6b-45bb-b013-d9384ff64a80"></script>
 		%sveltekit.head%
 	</head>
