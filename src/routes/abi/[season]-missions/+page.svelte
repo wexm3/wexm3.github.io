@@ -3,7 +3,6 @@
 	import { browser } from '$app/environment';
 	import BackToTopButton from '$lib/components/BackToTopButton.svelte';
 	import MissionBlockTabs from '$lib/components/missions/MissionBlockTabs.svelte';
-	import MissionSearch from '$lib/components/missions/MissionSearch.svelte';
 	import CharacterNavigation from '$lib/components/missions/CharacterNavigation.svelte';
 	import MissionTimeline from '$lib/components/missions/MissionTimeline.svelte';
 	import MissionModal from '$lib/components/missions/MissionModal.svelte';
@@ -25,15 +24,12 @@
 	let selectedMission = $state(null);
 	let modalOpen = $state(false);
 	let lastViewedMissionId = $state(null);
-	let searchQuery = $state('');
-	let searchedMissions = $state([]);
 
 	let storageKey = $derived(`${data.season}-last-viewed-mission`);
 	let seasonNumber = $derived(data.season.replace('s', ''));
 
 	// When searching, show results from all blocks; otherwise filter by active block
-	let blockFilteredMissions = $derived(getMissionsByBlock(data.missions, activeBlock));
-	let filteredMissions = $derived(searchQuery ? searchedMissions : blockFilteredMissions);
+	let filteredMissions = $derived(getMissionsByBlock(data.missions, activeBlock));
 
 	let missionsByCharacter = $derived(groupMissionsByCharacter(data.characters, filteredMissions));
 	let missionCounts = $derived(createMissionCountMap(data.missionBlocks, data.missions));
@@ -72,11 +68,6 @@
 	function handleImageError(event) {
 		event.target.src = PLACEHOLDER_IMAGE;
 	}
-
-	function handleSearch(missions, query) {
-		searchedMissions = missions;
-		searchQuery = query;
-	}
 </script>
 
 <svelte:head>
@@ -88,16 +79,12 @@
 </svelte:head>
 
 <div class="container mx-auto px-4 py-6">
-	<MissionSearch missions={data.missions} onSearch={handleSearch} />
-
-	{#if !searchQuery}
-		<MissionBlockTabs
-			blocks={data.missionBlocks}
-			activeBlockId={activeBlock}
-			missionCounts={missionCounts}
-			onBlockChange={handleBlockChange}
-		/>
-	{/if}
+	<MissionBlockTabs
+		blocks={data.missionBlocks}
+		activeBlockId={activeBlock}
+		missionCounts={missionCounts}
+		onBlockChange={handleBlockChange}
+	/>
 
 	<CharacterNavigation
 		characters={data.characters}
