@@ -10,6 +10,8 @@
 			<a
 				href="/abi/settings"
 				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
+				data-sveltekit-preload-data="hover"
+				data-sveltekit-preload-code="hover"
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Settings</h2>
@@ -20,6 +22,8 @@
 			<a
 				href="/abi/s3-missions"
 				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
+				data-sveltekit-preload-data="hover"
+				data-sveltekit-preload-code="hover"
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Season 3 Missions</h2>
@@ -30,6 +34,8 @@
 			<a
 				href="/abi/s4-missions"
 				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
+				data-sveltekit-preload-data="hover"
+				data-sveltekit-preload-code="hover"
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Season 4 Missions</h2>

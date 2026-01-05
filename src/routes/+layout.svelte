@@ -2,7 +2,7 @@
 	import '../app.css';
 	import Header from '$lib/components/Header.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
-	import { page } from '$app/stores';
+	import { page, navigating } from '$app/stores';
 
 	let { children } = $props();
 
@@ -75,6 +75,9 @@
 </svelte:head>
 
 <Header>
+	{#if $navigating}
+		<div class="fixed top-0 left-0 right-0 h-1 bg-primary z-50 animate-pulse"></div>
+	{/if}
 	{#if showBreadcrumbs}
 		<div class="border-b border-base-300 bg-base-100 px-4 py-3">
 			<div class="container mx-auto">
