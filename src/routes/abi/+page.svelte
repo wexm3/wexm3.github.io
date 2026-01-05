@@ -1,3 +1,7 @@
+<script>
+	import { preloadData, preloadCode } from '$app/navigation';
+</script>
+
 <svelte:head>
 	<title>Arena Breakout: Infinite - wexm3</title>
 </svelte:head>
@@ -10,8 +14,12 @@
 			<a
 				href="/abi/settings"
 				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
-				data-sveltekit-preload-data="hover"
-				data-sveltekit-preload-code="hover"
+				data-sveltekit-preload-data="tap"
+				data-sveltekit-preload-code="tap"
+				on:mouseenter={() => {
+					preloadData('/abi/settings');
+					preloadCode('/abi/settings');
+				}}
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Settings</h2>
@@ -22,8 +30,12 @@
 			<a
 				href="/abi/s3-missions"
 				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
-				data-sveltekit-preload-data="hover"
-				data-sveltekit-preload-code="hover"
+				data-sveltekit-preload-data="tap"
+				data-sveltekit-preload-code="tap"
+				on:mouseenter={() => {
+					preloadData('/abi/s3-missions');
+					preloadCode('/abi/s3-missions');
+				}}
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Season 3 Missions</h2>
@@ -34,8 +46,12 @@
 			<a
 				href="/abi/s4-missions"
 				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
-				data-sveltekit-preload-data="hover"
-				data-sveltekit-preload-code="hover"
+				data-sveltekit-preload-data="tap"
+				data-sveltekit-preload-code="tap"
+				on:mouseenter={() => {
+					preloadData('/abi/s4-missions');
+					preloadCode('/abi/s4-missions');
+				}}
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Season 4 Missions</h2>
