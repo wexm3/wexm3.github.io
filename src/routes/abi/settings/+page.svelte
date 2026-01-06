@@ -6,7 +6,6 @@
 	import PlayerInfo from '$lib/components/settings/PlayerInfo.svelte';
 	import SettingsSection from '$lib/components/settings/SettingsSection.svelte';
 	import LoadingSkeleton from '$lib/components/settings/LoadingSkeleton.svelte';
-	import Toast from '$lib/components/settings/Toast.svelte';
 
 	// FIXED: Ensure playersSettings is not empty
 	if (!playersSettings || playersSettings.length === 0) {
@@ -17,12 +16,9 @@
 	let activePlayer = $state(playersSettings[0]?.id || '');
 	let copiedCode = $state(null);
 	let imageLoaded = $state({});
-	let toastMessage = $state('');
-	let showToast = $state(false);
 	let isInitialized = $state(false);
 
 	// FIXED: Track timeouts for cleanup
-	let toastTimeout = null;
 	let copiedTimeout = null;
 
 	// Initialize from URL
@@ -82,7 +78,6 @@
 
 	// FIXED: Cleanup timeouts on unmount
 	onDestroy(() => {
-		if (toastTimeout) clearTimeout(toastTimeout);
 		if (copiedTimeout) clearTimeout(copiedTimeout);
 	});
 
@@ -107,19 +102,6 @@
 		}
 	}
 
-	function showToastMessage(message) {
-		// FIXED: Clear existing timeout
-		if (toastTimeout) clearTimeout(toastTimeout);
-
-		toastMessage = message;
-		showToast = true;
-
-		toastTimeout = setTimeout(() => {
-			showToast = false;
-			toastTimeout = null;
-		}, 2000);
-	}
-
 	// FIXED: Clipboard fallback and better error handling
 	async function copyToClipboard(code, category) {
 		try {
@@ -128,7 +110,6 @@
 				// FIXED: Fallback for older browsers or HTTP
 				fallbackCopyToClipboard(code);
 				copiedCode = category;
-				showToastMessage(`${category} code copied!`);
 
 				if (copiedTimeout) clearTimeout(copiedTimeout);
 				copiedTimeout = setTimeout(() => {
@@ -140,7 +121,6 @@
 
 			await navigator.clipboard.writeText(code);
 			copiedCode = category;
-			showToastMessage(`${category} code copied!`);
 
 			// FIXED: Clear existing timeout
 			if (copiedTimeout) clearTimeout(copiedTimeout);
@@ -150,8 +130,6 @@
 			}, 2000);
 		} catch (err) {
 			console.error('Failed to copy:', err);
-			// FIXED: Show error to user
-			showToastMessage('Failed to copy. Please try again.');
 		}
 	}
 
@@ -173,30 +151,6 @@
 			throw err;
 		} finally {
 			document.body.removeChild(textArea);
-		}
-	}
-
-	async function sharePlayer() {
-		if (!browser) return;
-
-		try {
-			const url = new URL(window.location);
-			url.searchParams.set('player', activePlayer);
-			const shareUrl = url.toString();
-
-			// Check if clipboard API is available
-			if (!navigator.clipboard) {
-				fallbackCopyToClipboard(shareUrl);
-				showToastMessage('Share link copied!');
-				return;
-			}
-
-			await navigator.clipboard.writeText(shareUrl);
-			showToastMessage('Share link copied!');
-		} catch (err) {
-			console.error('Failed to copy share link:', err);
-			// FIXED: Show error to user
-			showToastMessage('Failed to copy link. Please try again.');
 		}
 	}
 </script>
@@ -237,16 +191,13 @@
 	{:else if currentPlayerData}
 		{#key activePlayer}
 			<!-- Player Info -->
-			<PlayerInfo player={currentPlayerData} {imageLoaded} onShare={sharePlayer} />
+			<PlayerInfo player={currentPlayerData} {imageLoaded} />
 
 			<!-- Settings Sections (Accordion) -->
 			<SettingsSection player={currentPlayerData} {copiedCode} onCopy={copyToClipboard} />
 		{/key}
 	{/if}
 </div>
-
-<!-- Toast Notification -->
-<Toast message={toastMessage} bind:show={showToast} />
 
 <style>
 	.tabs-boxed {
