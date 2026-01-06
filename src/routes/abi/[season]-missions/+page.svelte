@@ -39,9 +39,42 @@
 
 	onMount(() => {
 		if (browser) {
+			// Handle last viewed mission from localStorage
 			const saved = localStorage.getItem(storageKey);
 			if (saved) {
 				lastViewedMissionId = parseInt(saved);
+			}
+
+			// Handle deep link for a specific mission, which overrides any other view
+			const urlParams = new URLSearchParams(window.location.search);
+			const missionIdFromUrl = urlParams.get('missionId');
+
+			if (missionIdFromUrl) {
+				const missionToOpen = data.missions.find((m) => m.id === parseInt(missionIdFromUrl));
+
+				if (missionToOpen) {
+					// Set the correct block for the mission to be displayed
+					activeBlock = missionToOpen.block;
+
+					// Open the modal for the mission
+					handleMissionClick(missionToOpen);
+
+					// Scroll to the character's timeline for context after UI updates
+					setTimeout(() => {
+						const characterElement = document.getElementById(`char-${missionToOpen.character}`);
+						if (characterElement) {
+							characterElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						}
+					}, 100);
+
+					// Clean up the URL to prevent the modal from re-opening on refresh
+					urlParams.delete('missionId');
+					const newUrl =
+						urlParams.size > 0
+							? `${window.location.pathname}?${urlParams}`
+							: window.location.pathname;
+					window.history.replaceState({}, '', newUrl);
+				}
 			}
 		}
 	});

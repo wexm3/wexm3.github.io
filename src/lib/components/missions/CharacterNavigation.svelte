@@ -3,6 +3,8 @@
 
 	let { characters, missionsByCharacter, onImageError } = $props();
 
+	let loaded = $state({});
+
 	let hasAnyMissions = $derived(
 		characters.some((char) => missionsByCharacter[char.id]?.length > 0)
 	);
@@ -24,10 +26,15 @@
 			{#each characters as char}
 				{#if missionsByCharacter[char.id]?.length > 0}
 					<button class="btn btn-outline btn-xs sm:btn-sm" onclick={() => scrollToCharacter(char.id)}>
+						{#if !loaded[char.id]}
+							<div class="skeleton h-5 w-5 rounded-full"></div>
+						{/if}
 						<img
 							src={char.avatar}
 							alt={char.name}
 							class="h-5 w-5 rounded-full object-cover"
+							style={loaded[char.id] ? '' : 'display: none;'}
+							onload={() => (loaded[char.id] = true)}
 							onerror={onImageError}
 						/>
 						<span class="hidden sm:inline">{char.name}</span>

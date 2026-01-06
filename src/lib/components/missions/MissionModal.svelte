@@ -1,5 +1,40 @@
 <script>
+	import { browser } from '$app/environment';
+
 	let { isOpen, mission, character, onClose, onImageError } = $props();
+	let loaded = $state(false);
+	let copyText = $state('Copy');
+
+	$effect(() => {
+		if (mission) {
+			loaded = false;
+			copyText = 'Copy';
+		}
+	});
+
+	function copyLink() {
+		if (!browser || !mission) return;
+
+		const url = new URL(window.location.href);
+		url.searchParams.set('missionId', mission.id);
+
+		navigator.clipboard.writeText(url.href).then(
+			() => {
+				copyText = 'Copied!';
+				setTimeout(() => {
+					copyText = 'Copy';
+				}, 2000);
+			},
+			(err) => {
+				// In production, you might want to show a user-facing error.
+				console.error('Failed to copy link: ', err);
+				copyText = 'Error';
+				setTimeout(() => {
+					copyText = 'Copy';
+				}, 2000);
+			}
+		);
+	}
 </script>
 
 {#if isOpen && mission}
@@ -7,10 +42,15 @@
 		<div class="modal-box max-w-2xl">
 			<!-- Character Info -->
 			<div class="mb-4 flex items-center gap-3">
+				{#if !loaded}
+					<div class="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+				{/if}
 				<img
 					src={character?.avatar}
 					alt={character?.name}
 					class="h-16 w-16 rounded-full object-cover"
+					class:hidden={!loaded}
+					onload={() => (loaded = true)}
 					onerror={onImageError}
 				/>
 				<div>
@@ -61,8 +101,11 @@
 				</div>
 			</div>
 
-			<!-- Close Button -->
-			<div class="modal-action">
+			<!-- Actions -->
+			<div class="modal-action mt-6 justify-between">
+				<button class="btn" onclick={copyLink} disabled={copyText !== 'Copy'}>
+					{copyText}
+				</button>
 				<button class="btn" onclick={onClose}>Close</button>
 			</div>
 		</div>

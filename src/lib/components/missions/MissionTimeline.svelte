@@ -3,6 +3,8 @@
 
 	let { character, missions, lastViewedMissionId, onMissionClick, onImageError } = $props();
 
+	let loaded = $state(false);
+
 	let scrollContainer = null;
 	let isDown = false;
 	let startX = 0;
@@ -49,16 +51,19 @@
 	<!-- Desktop: Horizontal Timeline -->
 	<div class="hidden lg:block">
 		<div class="mb-3 flex items-center gap-3">
+			{#if !loaded}
+				<div class="skeleton h-12 w-12 shrink-0 rounded-full"></div>
+			{/if}
 			<img
 				src={character.avatar}
 				alt={character.name}
 				class="h-12 w-12 rounded-full object-cover"
+				class:hidden={!loaded}
+				onload={() => (loaded = true)}
 				onerror={onImageError}
 			/>
 			<h3 class="text-2xl font-bold">{character.name}</h3>
-			<div class="badge badge-neutral badge-sm">
-				{missions.length} missions
-			</div>
+			<div class="badge badge-neutral badge-sm">{missions.length} missions</div>
 		</div>
 		<div
 			class="overflow-x-auto pb-6 cursor-grab select-none"
@@ -98,16 +103,19 @@
 	<!-- Mobile: Vertical Timeline -->
 	<div class="lg:hidden">
 		<div class="mb-2 flex items-center gap-3">
+			{#if !loaded}
+				<div class="skeleton h-10 w-10 shrink-0 rounded-full"></div>
+			{/if}
 			<img
 				src={character.avatar}
 				alt={character.name}
 				class="h-10 w-10 rounded-full object-cover"
+				class:hidden={!loaded}
+				onload={() => (loaded = true)}
 				onerror={onImageError}
 			/>
 			<h3 class="text-xl font-bold">{character.name}</h3>
-			<div class="badge badge-neutral badge-sm">
-				{missions.length} missions
-			</div>
+			<div class="badge badge-neutral badge-sm">{missions.length} missions</div>
 		</div>
 		<ul class="timeline timeline-vertical timeline-snap-icon max-md:timeline-compact">
 			{#each missions as mission, index}
