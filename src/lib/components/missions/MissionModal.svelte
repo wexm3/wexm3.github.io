@@ -97,7 +97,7 @@
 					class:hidden={!loaded}
 					onload={() => (loaded = true)}
 					onerror={onImageError}
-					loading="lazy"
+					loading="eager"
 				/>
 				<div>
 					<h3 class="text-2xl font-bold">{mission.title}</h3>
