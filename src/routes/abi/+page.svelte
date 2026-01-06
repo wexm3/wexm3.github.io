@@ -23,7 +23,7 @@
 			>
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Settings</h2>
-					<p class="text-base-content/70">Configure your preferences</p>
+					<p class="text-base-content/70">Game codes, mouse sensitivity, monitor specs, and more</p>
 				</div>
 			</a>
 

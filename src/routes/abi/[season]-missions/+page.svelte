@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import BackToTopButton from '$lib/components/BackToTopButton.svelte';
 	import MissionBlockTabs from '$lib/components/missions/MissionBlockTabs.svelte';
@@ -25,6 +25,9 @@
 	let modalOpen = $state(false);
 	let lastViewedMissionId = $state(null);
 
+	// FIXED: Track timeout for cleanup
+	let scrollTimeout = null;
+
 	let storageKey = $derived(`${data.season}-last-viewed-mission`);
 	let seasonNumber = $derived(data.season.replace('s', ''));
 
@@ -39,44 +42,75 @@
 
 	onMount(() => {
 		if (browser) {
-			// Handle last viewed mission from localStorage
-			const saved = localStorage.getItem(storageKey);
-			if (saved) {
-				lastViewedMissionId = parseInt(saved);
+			// FIXED: Safe localStorage access with try-catch
+			try {
+				const saved = localStorage.getItem(storageKey);
+				if (saved) {
+					const parsedId = parseInt(saved, 10);
+					// FIXED: Validate parsed number
+					if (!isNaN(parsedId) && parsedId > 0) {
+						lastViewedMissionId = parsedId;
+					}
+				}
+			} catch (error) {
+				console.warn('Failed to load last viewed mission:', error);
 			}
 
 			// Handle deep link for a specific mission, which overrides any other view
 			const urlParams = new URLSearchParams(window.location.search);
 			const missionIdFromUrl = urlParams.get('missionId');
 
-			if (missionIdFromUrl) {
-				const missionToOpen = data.missions.find((m) => m.id === parseInt(missionIdFromUrl));
+			// FIXED: Validate missionIdFromUrl for XSS/injection
+			if (
+				missionIdFromUrl &&
+				typeof missionIdFromUrl === 'string' &&
+				/^\d+$/.test(missionIdFromUrl)
+			) {
+				const parsedId = parseInt(missionIdFromUrl, 10);
 
-				if (missionToOpen) {
-					// Set the correct block for the mission to be displayed
-					activeBlock = missionToOpen.block;
+				// FIXED: Additional validation
+				if (!isNaN(parsedId) && parsedId > 0 && parsedId < 10000) {
+					const missionToOpen = data.missions.find((m) => m.id === parsedId);
 
-					// Open the modal for the mission
-					handleMissionClick(missionToOpen);
+					if (missionToOpen) {
+						// Set the correct block for the mission to be displayed
+						activeBlock = missionToOpen.block;
 
-					// Scroll to the character's timeline for context after UI updates
-					setTimeout(() => {
-						const characterElement = document.getElementById(`char-${missionToOpen.character}`);
-						if (characterElement) {
-							characterElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						// Open the modal for the mission
+						handleMissionClick(missionToOpen);
+
+						// FIXED: Clear existing timeout
+						if (scrollTimeout) clearTimeout(scrollTimeout);
+
+						// Scroll to the character's timeline for context after UI updates
+						scrollTimeout = setTimeout(() => {
+							const characterElement = document.getElementById(`char-${missionToOpen.character}`);
+							if (characterElement) {
+								characterElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+							}
+							scrollTimeout = null;
+						}, 100);
+
+						// Clean up the URL to prevent the modal from re-opening on refresh
+						try {
+							urlParams.delete('missionId');
+							const newUrl =
+								urlParams.size > 0
+									? `${window.location.pathname}?${urlParams}`
+									: window.location.pathname;
+							window.history.replaceState({}, '', newUrl);
+						} catch (error) {
+							console.warn('Failed to clean up URL:', error);
 						}
-					}, 100);
-
-					// Clean up the URL to prevent the modal from re-opening on refresh
-					urlParams.delete('missionId');
-					const newUrl =
-						urlParams.size > 0
-							? `${window.location.pathname}?${urlParams}`
-							: window.location.pathname;
-					window.history.replaceState({}, '', newUrl);
+					}
 				}
 			}
 		}
+	});
+
+	// FIXED: Cleanup timeout on unmount
+	onDestroy(() => {
+		if (scrollTimeout) clearTimeout(scrollTimeout);
 	});
 
 	function handleBlockChange(blockId) {
@@ -88,8 +122,13 @@
 		modalOpen = true;
 		lastViewedMissionId = mission.id;
 
+		// FIXED: Safe localStorage with try-catch
 		if (browser) {
-			localStorage.setItem(storageKey, mission.id.toString());
+			try {
+				localStorage.setItem(storageKey, mission.id.toString());
+			} catch (error) {
+				console.warn('Failed to save last viewed mission:', error);
+			}
 		}
 	}
 
@@ -105,6 +144,11 @@
 
 <svelte:head>
 	<title>Season {seasonNumber} Missions - Arena Breakout: Infinite</title>
+	<meta
+		name="description"
+		content="Track and complete Season {seasonNumber} missions in Arena Breakout: Infinite. View objectives, rewards, and character storylines."
+	/>
+	<meta name="robots" content="index, follow" />
 	<!-- Preload character images for faster rendering -->
 	{#each data.characters.slice(0, 4) as char}
 		<link rel="preload" href={char.avatar} as="image" />
