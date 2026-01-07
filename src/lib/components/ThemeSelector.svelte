@@ -3,21 +3,7 @@
 
 	let currentTheme = $state('light');
 
-	const themes = [
-		'light',
-		'dark',
-		'luxury',
-		'forest',
-		'pastel',
-		'black',
-		'dracula',
-		'dim',
-		'nord',
-		'sunset',
-		'abyss',
-		'caramellatte',
-		'silk'
-	];
+	const themes = ['light', 'dark', 'pastel', 'dracula', 'dim', 'nord'];
 
 	function getSystemTheme() {
 		if (typeof window !== 'undefined') {
