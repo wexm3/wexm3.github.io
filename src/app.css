@@ -3,6 +3,7 @@
 	themes: light --default, dark --prefersdark, luxury, forest, pastel, black, dracula, dim, nord, sunset, abyss, caramellatte, silk;
 }
 
+
 @font-face {
 	font-family: 'Asimovian';
 	src: url('/fonts/Asimovian.woff2') format('woff2');
@@ -12,13 +13,37 @@
 }
 
 html {
-	scrollbar-gutter: stable;
+	/*scrollbar-gutter: stable;*/
+	scroll-behavior: smooth;
 }
 
-/* View Transitions for theme switching */
+/* Performance optimizations */
+* {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* View Transitions for theme switching and navigation */
+@view-transition {
+	navigation: auto;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
-	animation-duration: 0.5s;
+	animation-duration: 0.25s;
+	animation-timing-function: ease-out;
 }
 
 ::view-transition-old(root) {

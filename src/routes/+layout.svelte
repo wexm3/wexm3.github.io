@@ -2,9 +2,24 @@
 	import '../app.css';
 	import Header from '$lib/components/Header.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import BackToTopButton from '$lib/components/BackToTopButton.svelte';
+	import AnnouncementBanner from '$lib/components/AnnouncementBanner.svelte';
 	import { page, navigating } from '$app/stores';
+	import { onNavigate } from '$app/navigation';
 
 	let { children } = $props();
+
+	// View Transitions for smooth page navigation
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 
 	let breadcrumbs = $derived.by(() => {
 		const items = [{ path: '/', label: 'wexm3' }];
@@ -67,17 +82,18 @@
 	<!-- Performance: Preload critical assets -->
 	<link rel="preload" href="/fonts/Asimovian.woff2" as="font" type="font/woff2" crossorigin />
 	<link rel="preload" href="/images/logo.webp" as="image" fetchpriority="high" />
+
+	<!-- Favicon only -->
 	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-	<link rel="manifest" href="/site.webmanifest" />
 </svelte:head>
+
+<AnnouncementBanner />
 
 <Header>
 	{#if $navigating}
 		<div class="fixed top-0 left-0 right-0 h-1 bg-primary z-50 animate-pulse"></div>
 	{/if}
+
 	{#if showBreadcrumbs}
 		<div class="border-b border-base-300 bg-base-100 px-4 py-3">
 			<div class="container mx-auto">
@@ -89,3 +105,5 @@
 		{@render children()}
 	</main>
 </Header>
+
+<BackToTopButton />
