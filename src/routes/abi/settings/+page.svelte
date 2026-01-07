@@ -198,9 +198,3 @@
 		{/key}
 	{/if}
 </div>
-
-<style>
-	.tabs-boxed {
-		background: oklch(var(--b2) / 0.5);
-	}
-</style>

@@ -1,6 +1,7 @@
 <script>
 	import ThemeSelector from './ThemeSelector.svelte';
 
+	let { children } = $props();
 	let drawerOpen = $state(false);
 
 	function toggleDrawer() {
@@ -48,7 +49,7 @@
 				<ThemeSelector />
 			</div>
 		</div>
-		<slot />
+		{@render children()}
 	</div>
 	<div class="drawer-side z-50">
 		<label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>

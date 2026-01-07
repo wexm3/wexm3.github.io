@@ -1,63 +1,39 @@
 <script>
-	import { preloadData, preloadCode } from '$app/navigation';
+	import PageContainer from '$lib/components/PageContainer.svelte';
+	import PageHeader from '$lib/components/PageHeader.svelte';
+	import Card from '$lib/components/Card.svelte';
 </script>
 
 <svelte:head>
 	<title>Arena Breakout: Infinite - wexm3</title>
 </svelte:head>
 
-<div class="container mx-auto px-4 py-12">
-	<div class="max-w-4xl mx-auto">
-		<h1 class="text-3xl font-bold text-center mb-8">Arena Breakout: Infinite</h1>
+<PageContainer maxWidth="default">
+	<PageHeader
+		title="Arena Breakout: Infinite"
+		align="center"
+	/>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			<a
-				href="/abi/settings"
-				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
-				data-sveltekit-preload-data="tap"
-				data-sveltekit-preload-code="tap"
-				on:mouseenter={() => {
-					preloadData('/abi/settings');
-					preloadCode('/abi/settings');
-				}}
-			>
-				<div class="card-body items-center text-center">
-					<h2 class="card-title">Settings</h2>
-					<p class="text-base-content/70">Game codes, mouse sensitivity, monitor specs, and more</p>
-				</div>
-			</a>
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+		<Card
+			href="/abi/settings"
+			icon="⚙️"
+			title="Settings"
+			description="Game codes, mouse sensitivity, monitor specs"
+		/>
 
-			<a
-				href="/abi/s3-missions"
-				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
-				data-sveltekit-preload-data="tap"
-				data-sveltekit-preload-code="tap"
-				on:mouseenter={() => {
-					preloadData('/abi/s3-missions');
-					preloadCode('/abi/s3-missions');
-				}}
-			>
-				<div class="card-body items-center text-center">
-					<h2 class="card-title">Season 3 Missions</h2>
-					<p class="text-base-content/70">View S3 mission timeline</p>
-				</div>
-			</a>
+		<Card
+			href="/abi/s3-missions"
+			icon="🎯"
+			title="Season 3 Missions"
+			description="View S3 mission timeline"
+		/>
 
-			<a
-				href="/abi/s4-missions"
-				class="card bg-base-200 hover:bg-base-300 transition-colors cursor-pointer"
-				data-sveltekit-preload-data="tap"
-				data-sveltekit-preload-code="tap"
-				on:mouseenter={() => {
-					preloadData('/abi/s4-missions');
-					preloadCode('/abi/s4-missions');
-				}}
-			>
-				<div class="card-body items-center text-center">
-					<h2 class="card-title">Season 4 Missions</h2>
-					<p class="text-base-content/70">View S4 mission timeline</p>
-				</div>
-			</a>
-		</div>
+		<Card
+			href="/abi/s4-missions"
+			icon="🎯"
+			title="Season 4 Missions"
+			description="View S4 mission timeline"
+		/>
 	</div>
-</div>
+</PageContainer>

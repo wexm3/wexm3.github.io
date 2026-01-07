@@ -1,7 +1,6 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	import BackToTopButton from '$lib/components/BackToTopButton.svelte';
 	import MissionBlockTabs from '$lib/components/missions/MissionBlockTabs.svelte';
 	import CharacterNavigation from '$lib/components/missions/CharacterNavigation.svelte';
 	import MissionTimeline from '$lib/components/missions/MissionTimeline.svelte';
@@ -187,8 +186,6 @@
 		<EmptyState />
 	{/if}
 </div>
-
-<BackToTopButton />
 
 <MissionModal
 	isOpen={modalOpen}
