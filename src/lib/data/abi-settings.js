@@ -18,16 +18,13 @@ export const playersSettings = [
 		id: 'wexm3',
 		name: 'wexm3',
 		avatar: '/avatars/wexm3.svg',
-		lastUpdated: '2026-01-06',
+		lastUpdated: '2026-01-11',
 
 		// Settings Codes
 		codes: {
-			'Game': 'EXAMPLE_CODE_12345678901234',
-			'Image': 'EXAMPLE_CODE_12345678901234',
-			'Sound': 'EXAMPLE_CODE_12345678901234',
-			'Post-Processing': 'EXAMPLE_CODE_12345678901234',
-			'Control': 'EXAMPLE_CODE_12345678901234',
-			'Privacy': 'EXAMPLE_CODE_12345678901234'
+			'Game': 'Game-3fCXsO4HcCqwbb444',
+			'PostProcessing': 'PostProcessing-3fCXsO4HcCqwbb4P4',
+			'Control': 'Control-3fCXsO4HcCqwbb4b4'
 		},
 
 		// Mouse Settings
@@ -51,13 +48,13 @@ export const playersSettings = [
 		id: 'd1eos',
 		name: 'd1eos',
 		avatar: '/avatars/d1eos.svg',
-		lastUpdated: '2026-01-06',
+		lastUpdated: '2026-01-11',
 
 		// Only codes, no mouse/monitor info yet
 		codes: {
-			'Game': 'D1EOS_GAME_CODE_9876543210',
-			'Image': 'D1EOS_IMAGE_CODE_9876543210',
-			'Sound': 'D1EOS_SOUND_CODE_9876543210'
+			'Game': 'Game-3f5kEL0Uj6xHob4f4',
+			'PostProcessing': 'PostProcessing-3f5kEL0Uj6xHob4o4',
+			'Control': 'Control-3f5kEL0Uj6xHob4z4'
 		},
 
 		// Example: partial mouse settings
